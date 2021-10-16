@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,11 +15,19 @@
 
 	<!-- 將這個表單 丟進去 action=的位置 -->
 	<form class="pure-form" method="post"
-		action="${pageContext.request.contextPath}/servlet/cart/submit">
+		action="${ pageContext.request.contextPath }/servlet/cart/submit">
 		<fieldset>
-			<legend>10元商店 請選擇禮品</legend>
-			編號 : <input type="text" name="id" value=""><p />
-			禮品 : ...
+			<legend>10元商店 購物車</legend>
+			編號: <input type="text" name="id" value="${ user.id }" readonly><p />
+			禮品: 
+			<c:forEach var="d" items="${ data }">
+				<!-- ${d} : --> 
+				<c:forEach var="p" items="${ products }">
+					<c:if test="${ p.id eq d }">
+						${ p.name }
+					</c:if>
+				</c:forEach>
+			</c:forEach>
 			<p />
 			<button type="submit" class="pure-button pure-button-primary">結帳</button>
 			

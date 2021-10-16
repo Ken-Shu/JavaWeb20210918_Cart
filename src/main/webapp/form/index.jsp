@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,14 +18,15 @@
 		action="${pageContext.request.contextPath}/servlet/cart">
 		<fieldset>
 			<legend>10元商店 請選擇禮品</legend>
-			編號 : <input type="text" name="id" value=""><p />
+			編號 : <input type="text" name="id" value="${user.id}" readonly><p />
 			禮品 : <p />
-				<input type="checkbox" name = "data" value="書本">書本 <p />
-			 	<input type="checkbox" name = "data" value="鉛筆">鉛筆 <p />
-			 	<input type="checkbox" name = "data" value="墊板">墊板 <p />
-			 	<input type="checkbox" name = "data" value="橡皮">橡皮 <p />
-			 	<input type="checkbox" name = "data" value="彈珠">彈珠 <p />
+			
+			<c:forEach var="p" items="${products}">
+					<input type="checkbox" name = "data" value="${p.id}">${p.name}<p />
+			</c:forEach>
+			
 			<p />
+			
 			<button type="submit" class="pure-button pure-button-primary">加入購物車</button>
 			
 			<button type="button"
@@ -31,6 +35,9 @@
 			<button type="button"
 				onclick="location.href='${pageContext.request.contextPath}/servlet/cart?type=2'"
 				class="pure-button pure-button-primary">查詢訂單紀錄</button>
+			<button type="button"
+				onclick="location.href='${pageContext.request.contextPath}/logout'"
+				class="pure-button pure-button-primary">登出</button>
 		</fieldset>
 	</form>
 
