@@ -25,6 +25,6 @@ public class LoginOutFilter extends HttpFilter{
 		session.invalidate();
 		/*RequestDispatcher rd = req.getRequestDispatcher("/form/login.jsp");
 		rd.forward(req, res);*/
-		res.sendRedirect(getServletContext().getContextPath() + "/form/index.jsp");
+		res.sendRedirect(getServletContext().getContextPath() + "/servlet/cart");
 	}
 }

@@ -16,47 +16,50 @@ import entity.Order;
 import entity.User;
 
 @WebServlet("/servlet/cart")
-public class CartController extends HttpServlet{
-	private CartDao cartdao = new CartDao();
+public class CartController extends HttpServlet {
+	private CartDao cartDao = new CartDao();
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String type = req.getParameter("type");
-		type = type == null? "" : type;
+		type = (type == null) ? "" : type;
 		RequestDispatcher rd = null;
 		HttpSession session = req.getSession(false);
 		switch (type) {
-		
-		case "1": //查看購物車
-			rd = req.getRequestDispatcher("/form/cart.jsp");
-			req.setAttribute("products", cartdao.queryProducts());
-			break;
-			
-		case "2": //根據 user.id 查看訂單紀錄
-			rd = req.getRequestDispatcher("/form/record.jsp");
-			User user = (User)session.getAttribute("user");
-			List<Order> orders = cartdao.queryOrderByUserId(user.getId());
-			req.setAttribute("orders", orders);
-			req.setAttribute("products", cartdao.queryProducts());
-			break;
-			
-		default :
-			rd = req.getRequestDispatcher("/form/index.jsp");
-			req.setAttribute("products", cartdao.queryProducts());
+			case "1": // 查看購物車
+				rd = req.getRequestDispatcher("/form/cart.jsp");
+				req.setAttribute("products", cartDao.queryProducts());
+				break;
+			case "2": // 根據 user.id 查看訂單紀錄
+				rd = req.getRequestDispatcher("/form/record.jsp");
+				User user = (User)session.getAttribute("user");
+				List<Order> orders = cartDao.queryOrdersByUserId(user.getId());
+				req.setAttribute("orders", orders);
+				req.setAttribute("products", cartDao.queryProducts());
+				break;
+			default:
+				rd = req.getRequestDispatcher("/form/index.jsp");
+				req.setAttribute("products", cartDao.queryProducts());
 		}
 		if(rd != null) {
 			rd.forward(req, resp);
 		}
 	}
-	//加入到購物車
+
+	// 加入到購物車
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//因為已經有 session user 物件 所以不需要判斷是否表單有傳 user id
-		String [] data = req.getParameterValues("data");
-		
-		//將資料存入到 session 中 (購物車)
-		HttpSession session = req.getSession();
-		session.setAttribute("data", data);
-		
-		resp.sendRedirect(getServletContext().getContextPath()+"/servlet/cart?type=1");
+		// 因為已經有 session user 物件, 所以不需要再判斷是否表單有傳 user id
+		String[] data = req.getParameterValues("data");
+		if(data == null) {
+			resp.sendRedirect(getServletContext().getContextPath() + "/servlet/cart");
+		} else {
+			// 將資料存入到 Session 中 (購物車)
+			HttpSession session = req.getSession();
+			session.setAttribute("data", data);
+			resp.sendRedirect(getServletContext().getContextPath() + "/servlet/cart?type=1");
+		}
 	}
+	
+	
+	
 }
