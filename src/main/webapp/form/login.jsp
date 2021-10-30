@@ -18,7 +18,10 @@
 		<fieldset>
 			<legend>10元商店 Login</legend>
 			帳號 : <input type="text" name="name" value=""><p />
-			密碼 : <input type="text" name="password" value=""><p />	
+			密碼 : <input type="text" name="password" value=""><p />
+			驗證 : <input type="text" name = "authCode" value=""><p />
+				 <img src="${pageContext.request.contextPath}/auth/code" valign="middle">
+				 <button type="button" onClick="location.reload()" class="pure-button pure-button-primary">重新取得</button> 
 			<p />
 			<button type="submit" class="pure-button pure-button-primary">登入</button>
 		</fieldset>
